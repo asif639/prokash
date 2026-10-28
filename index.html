@@ -2,241 +2,213 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#176b50">
-<title>প্রকাশ — কথা হোক, সংযোগ থাকুক</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,Arial,sans-serif;background:#f2f7f4;color:#17382c}
-header{background:#176b50;color:white;padding:20px}
-.logo{font-size:30px;font-weight:800;letter-spacing:1px}
-.tagline{font-size:14px;opacity:.9;margin-top:4px}
-main{max-width:480px;margin:28px auto;padding:16px}
-.card{background:white;border:1px solid #e0eae3;border-radius:22px;padding:22px;box-shadow:0 8px 28px #1233220d}
-h2{margin:0 0 8px;font-size:23px}
-p{line-height:1.6}
-.tabs{display:flex;gap:8px;margin:20px 0}
-.tabs button{flex:1;background:#e8f2ec;color:#176b50}
-.tabs button.active{background:#176b50;color:white}
-input{display:block;width:100%;padding:14px;border:1px solid #ccdcd1;border-radius:12px;margin:12px 0;font-size:16px;background:#fff}
-button{border:0;border-radius:12px;padding:13px 16px;font-size:15px;font-weight:700;cursor:pointer}
-.primary{width:100%;background:#176b50;color:white;margin-top:8px}
-.secondary{background:#e8f2ec;color:#176b50}
-button:disabled{opacity:.6}
-.status{padding:12px;border-radius:12px;background:#eef5ef;margin:14px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}
-.hidden{display:none!important}
-.small{font-size:13px;color:#64766a}
-.profile{background:#f1f7f2;padding:16px;border-radius:15px;margin:16px 0}
-footer{text-align:center;color:#6a7e71;font-size:12px;padding:20px}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>প্রকাশ | Prokash</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f4f2;
+      color: #183b2b;
+    }
+    header {
+      background: #176b4d;
+      color: white;
+      text-align: center;
+      padding: 24px 16px;
+    }
+    header h1 { margin: 0 0 8px; }
+    main {
+      max-width: 420px;
+      margin: 28px auto;
+      padding: 20px;
+    }
+    .panel {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 4px 18px #00000010;
+    }
+    input, button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border-radius: 9px;
+      font-size: 16px;
+    }
+    input {
+      border: 1px solid #cbd8d0;
+      background: white;
+    }
+    button {
+      border: 0;
+      background: #176b4d;
+      color: white;
+      font-weight: bold;
+    }
+    button.secondary {
+      background: #e6eee9;
+      color: #176b4d;
+    }
+    #message {
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+    .hidden { display: none; }
+    small { color: #63776b; line-height: 1.6; }
+  </style>
 </head>
 <body>
-<header>
-  <div class="logo">প্রকাশ</div>
-  <div class="tagline">কথা হোক, সংযোগ থাকুক।</div>
-</header>
+  <header>
+    <h1>প্রকাশ</h1>
+    <div>আপনার কথা, আপনার পরিচয়</div>
+  </header>
 
-<main>
-  <section class="card">
-    <div id="authArea">
-      <h2 id="heading">প্রকাশে স্বাগতম</h2>
-      <p class="small">তোমার অ্যাকাউন্ট তৈরি করো অথবা লগইন করো।</p>
+  <main>
+    <section class="panel" id="authPanel">
+      <h2>স্বাগতম!</h2>
+      <p>নতুন অ্যাকাউন্ট তৈরি করুন অথবা লগইন করুন।</p>
 
-      <div class="tabs">
-        <button id="loginTab" class="active" type="button">লগইন</button>
-        <button id="signupTab" type="button">নতুন অ্যাকাউন্ট</button>
-      </div>
+      <input id="email" type="email"
+        placeholder="আপনার ইমেইল" autocomplete="email">
 
-      <form id="authForm">
-        <div id="nameWrap" class="hidden">
-          <label for="displayName">তোমার নাম</label>
-          <input id="displayName" type="text" maxlength="60"
-                 placeholder="যেমন: আসিফ" autocomplete="name">
-        </div>
+      <input id="password" type="password"
+        placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)"
+        autocomplete="current-password">
 
-        <label for="email">ইমেইল</label>
-        <input id="email" type="email" required
-               placeholder="তোমার ইমেইল" autocomplete="email">
+      <button id="signupBtn">নতুন অ্যাকাউন্ট তৈরি</button>
+      <button id="loginBtn" class="secondary">লগইন</button>
 
-        <label for="password">পাসওয়ার্ড</label>
-        <input id="password" type="password" required minlength="6"
-               placeholder="কমপক্ষে ৬ অক্ষর"
-               autocomplete="current-password">
+      <p id="message" role="status"></p>
+      <small>
+        অ্যাকাউন্ট তৈরি করতে বৈধ ইমেইল ব্যবহার করুন।
+        ইমেইল যাচাই চালু থাকলে যাচাই সম্পন্ন করতে হবে।
+      </small>
+    </section>
 
-        <button id="submitBtn" class="primary" type="submit">লগইন</button>
-      </form>
-    </div>
+    <section class="panel hidden" id="homePanel">
+      <h2>প্রকাশে স্বাগতম!</h2>
+      <p>আপনি লগইন করেছেন।</p>
+      <p id="userEmail"></p>
+      <p>চ্যাটের সুবিধা পরবর্তী ধাপে যোগ করা হবে।</p>
+      <button id="logoutBtn">লগআউট</button>
+      <p id="homeMessage" role="status"></p>
+    </section>
+  </main>
 
-    <div id="userArea" class="hidden">
-      <h2>প্রকাশে স্বাগতম! 🌿</h2>
-      <div class="profile">
-        <p class="small">তোমার অ্যাকাউন্ট</p>
-        <h3 id="userName">ব্যবহারকারী</h3>
-        <p id="userEmail"></p>
-        <p class="small">অ্যাকাউন্টে লগইন সফল হয়েছে।</p>
-      </div>
-      <div class="status">
-        <strong>পরবর্তী ধাপ</strong>
-        <p>এখন আমরা ব্যক্তিগত চ্যাট, বন্ধু এবং মেসেজ পাঠানোর ব্যবস্থা যুক্ত করব।</p>
-      </div>
-      <button id="logoutBtn" class="secondary" type="button">লগআউট</button>
-    </div>
+  <script type="module">
+    import { createClient } from
+      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-    <div id="status" class="status" role="status" aria-live="polite">
-      প্রস্তুত।
-    </div>
-  </section>
-</main>
+    const SUPABASE_URL =
+      'https://evhywnompdttjozbafvt.supabase.co';
 
-<footer>প্রকাশ © ২০২৬ · কথা হোক, সংযোগ থাকুক</footer>
+    const SUPABASE_KEY =
+      'sb_publishable_rnrZ4bAeS6-jT3EpRZTzrg_WerzM3-s';
 
-<script type="module">
-import { createClient } from
-  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    const supabase = createClient(
+      SUPABASE_URL, SUPABASE_KEY
+    );
 
-const SUPABASE_URL = 'https://evhywnompdttjozbafvt.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_rnrZ4bAeS6-jT3EpRZTzrg_WerzM3-s';
+    const authPanel = document.getElementById('authPanel');
+    const homePanel = document.getElementById('homePanel');
+    const message = document.getElementById('message');
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    function showMessage(text) {
+      message.textContent = text;
+    }
 
-const $ = id => document.getElementById(id);
-let mode = 'login';
-let busy = false;
+    function showHome(user) {
+      authPanel.classList.add('hidden');
+      homePanel.classList.remove('hidden');
+      document.getElementById('userEmail').textContent =
+        user.email || '';
+    }
 
-function say(message) {
-  $('status').textContent = message;
-}
+    function showAuth() {
+      homePanel.classList.add('hidden');
+      authPanel.classList.remove('hidden');
+    }
 
-function setMode(nextMode) {
-  mode = nextMode;
-  const signup = mode === 'signup';
+    document.getElementById('signupBtn').onclick = async () => {
+      const email = document.getElementById('email')
+        .value.trim();
+      const password = document.getElementById('password')
+        .value;
 
-  $('heading').textContent = signup ? 'নতুন অ্যাকাউন্ট তৈরি করো' : 'প্রকাশে স্বাগতম';
-  $('nameWrap').classList.toggle('hidden', !signup);
-  $('displayName').required = signup;
-  $('submitBtn').textContent = signup ? 'অ্যাকাউন্ট তৈরি করো' : 'লগইন';
-  $('loginTab').classList.toggle('active', !signup);
-  $('signupTab').classList.toggle('active', signup);
-  $('password').autocomplete = signup ? 'new-password' : 'current-password';
-  say('তথ্য দিয়ে এগিয়ে যাও।');
-}
+      if (!email || password.length < 6) {
+        showMessage('সঠিক ইমেইল ও কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
+        return;
+      }
 
-$('loginTab').addEventListener('click', () => setMode('login'));
-$('signupTab').addEventListener('click', () => setMode('signup'));
-
-async function ensureProfile(user) {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, display_name')
-    .eq('id', user.id)
-    .maybeSingle();
-
-  if (error) throw error;
-  if (data) return data;
-
-  const displayName =
-    user.user_metadata?.display_name ||
-    user.email?.split('@')[0] ||
-    'নতুন ব্যবহারকারী';
-
-  const { data: created, error: insertError } = await supabase
-    .from('profiles')
-    .insert({
-      id: user.id,
-      display_name: displayName
-    })
-    .select('id, display_name')
-    .single();
-
-  if (insertError) throw insertError;
-  return created;
-}
-
-async function showUser(user) {
-  $('authArea').classList.add('hidden');
-  $('userArea').classList.remove('hidden');
-  $('userEmail').textContent = user.email || '';
-
-  try {
-    const profile = await ensureProfile(user);
-    $('userName').textContent =
-      profile.display_name || user.email?.split('@')[0] || 'ব্যবহারকারী';
-    say('লগইন সফল! তোমার প্রোফাইল প্রস্তুত।');
-  } catch (error) {
-    $('userName').textContent =
-      user.user_metadata?.display_name || 'ব্যবহারকারী';
-    say('লগইন হয়েছে, কিন্তু প্রোফাইল তৈরি হয়নি: ' + error.message);
-  }
-}
-
-$('authForm').addEventListener('submit', async event => {
-  event.preventDefault();
-  if (busy) return;
-  busy = true;
-  $('submitBtn').disabled = true;
-
-  const email = $('email').value.trim();
-  const password = $('password').value;
-  const displayName = $('displayName').value.trim();
-
-  try {
-    if (mode === 'signup') {
-      if (!displayName) throw new Error('তোমার নাম লিখো।');
+      showMessage('অ্যাকাউন্ট তৈরি হচ্ছে...');
 
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: displayName }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.session && data.user) {
-        await showUser(data.user);
-      } else {
-        say('অ্যাকাউন্টের অনুরোধ সফল হয়েছে। ইমেইলে যাচাইকরণের লিংক এলে সেটি খোলো, তারপর লগইন করো।');
-        setMode('login');
-      }
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
-      if (error) throw error;
-      if (data.user) await showUser(data.user);
+      if (error) {
+        showMessage('সমস্যা: ' + error.message);
+        return;
+      }
+
+      if (data.session && data.user) {
+        showHome(data.user);
+      } else {
+        showMessage(
+          'অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই প্রয়োজন হলে যাচাই করে তারপর লগইন করুন।'
+        );
+      }
+    };
+
+    document.getElementById('loginBtn').onclick = async () => {
+      const email = document.getElementById('email')
+        .value.trim();
+      const password = document.getElementById('password')
+        .value;
+
+      if (!email || !password) {
+        showMessage('ইমেইল ও পাসওয়ার্ড দিন।');
+        return;
+      }
+
+      showMessage('লগইন হচ্ছে...');
+
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) {
+        showMessage('লগইন হয়নি: ' + error.message);
+        return;
+      }
+
+      showHome(data.user);
+    };
+
+    document.getElementById('logoutBtn').onclick = async () => {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        document.getElementById('homeMessage').textContent =
+          'লগআউট হয়নি: ' + error.message;
+        return;
+      }
+
+      showAuth();
+      showMessage('লগআউট হয়েছে।');
+    };
+
+    const { data } = await supabase.auth.getSession();
+
+    if (data.session) {
+      showHome(data.session.user);
     }
-  } catch (error) {
-    say('সমস্যা হয়েছে: ' + (error.message || 'আবার চেষ্টা করো।'));
-  } finally {
-    busy = false;
-    $('submitBtn').disabled = false;
-  }
-});
-
-$('logoutBtn').addEventListener('click', async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    say('লগআউট করা যায়নি: ' + error.message);
-    return;
-  }
-  $('userArea').classList.add('hidden');
-  $('authArea').classList.remove('hidden');
-  $('password').value = '';
-  say('লগআউট সফল হয়েছে।');
-});
-
-const { data: { session }, error: sessionError } =
-  await supabase.auth.getSession();
-
-if (sessionError) {
-  say('সেশন যাচাই করা যায়নি: ' + sessionError.message);
-} else if (session?.user) {
-  await showUser(session.user);
-}
-</script>
+  </script>
 </body>
 </html>
