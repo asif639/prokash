@@ -2,213 +2,585 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>প্রকাশ | Prokash</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f0f4f2;
-      color: #183b2b;
-    }
-    header {
-      background: #176b4d;
-      color: white;
-      text-align: center;
-      padding: 24px 16px;
-    }
-    header h1 { margin: 0 0 8px; }
-    main {
-      max-width: 420px;
-      margin: 28px auto;
-      padding: 20px;
-    }
-    .panel {
-      background: white;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 4px 18px #00000010;
-    }
-    input, button {
-      width: 100%;
-      padding: 13px;
-      margin-top: 12px;
-      border-radius: 9px;
-      font-size: 16px;
-    }
-    input {
-      border: 1px solid #cbd8d0;
-      background: white;
-    }
-    button {
-      border: 0;
-      background: #176b4d;
-      color: white;
-      font-weight: bold;
-    }
-    button.secondary {
-      background: #e6eee9;
-      color: #176b4d;
-    }
-    #message {
-      line-height: 1.7;
-      overflow-wrap: anywhere;
-    }
-    .hidden { display: none; }
-    small { color: #63776b; line-height: 1.6; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#176b4d">
+<title>প্রকাশ | Prokash</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#edf3ef;color:#193b2b}
+header{background:#176b4d;color:white;padding:17px;text-align:center}
+header h1{margin:0;font-size:28px}
+header p{margin:6px 0 0;font-size:14px}
+main{max-width:850px;margin:20px auto;padding:12px}
+.panel{background:white;border-radius:15px;padding:18px;margin-bottom:15px;box-shadow:0 3px 14px #0000000c}
+h2{margin:0 0 12px;font-size:21px}
+h3{margin:0 0 8px}
+input,textarea,button{width:100%;padding:12px;margin-top:9px;border-radius:9px;font-size:15px}
+input,textarea{border:1px solid #cbd8d0;background:#fff;color:#183b2b}
+textarea{resize:vertical;min-height:75px}
+button{border:0;background:#176b4d;color:white;font-weight:bold;cursor:pointer}
+button.secondary{background:#e5eee8;color:#176b4d}
+button:disabled{opacity:.55}
+.hidden{display:none!important}
+.note{font-size:13px;color:#63776b;line-height:1.6}
+.status{font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.layout{display:grid;grid-template-columns:1fr 1.4fr;gap:14px}
+.userrow,.chatrow{padding:12px;border:1px solid #e0e9e3;border-radius:10px;margin-top:9px}
+.userrow strong,.chatrow strong{display:block}
+.userrow p,.chatrow p{font-size:13px;color:#63776b;margin:5px 0}
+.userrow button,.chatrow button{margin-top:7px}
+#messagesBox{height:340px;overflow-y:auto;background:#f4f8f5;border-radius:10px;padding:10px}
+.bubble{max-width:88%;width:fit-content;padding:10px 12px;border-radius:12px;background:white;margin:8px 0;overflow-wrap:anywhere;white-space:pre-wrap}
+.bubble.mine{background:#d8f1df;margin-left:auto}
+.bubble small{display:block;font-size:11px;color:#617468;margin-top:5px}
+.chathead{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.chathead button{width:auto;padding:9px 12px;margin:0}
+#sendForm{display:flex;gap:8px;align-items:flex-end}
+#sendForm input{flex:1;min-width:0}
+#sendForm button{width:90px}
+@media(max-width:650px){.layout{grid-template-columns:1fr}main{margin:10px auto;padding:9px}#messagesBox{height:300px}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>প্রকাশ</h1>
-    <div>আপনার কথা, আপনার পরিচয়</div>
-  </header>
+<header>
+  <h1>প্রকাশ</h1>
+  <p>আপনার কথা, আপনার পরিচয়</p>
+</header>
 
-  <main>
-    <section class="panel" id="authPanel">
-      <h2>স্বাগতম!</h2>
-      <p>নতুন অ্যাকাউন্ট তৈরি করুন অথবা লগইন করুন।</p>
+<main>
+  <section class="panel" id="authPanel">
+    <h2>স্বাগতম!</h2>
+    <p>নতুন অ্যাকাউন্ট তৈরি করুন অথবা লগইন করুন।</p>
+    <input id="email" type="email" placeholder="আপনার ইমেইল" autocomplete="email">
+    <input id="password" type="password" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" autocomplete="current-password">
+    <button id="signupBtn">নতুন অ্যাকাউন্ট তৈরি</button>
+    <button id="loginBtn" class="secondary">লগইন</button>
+    <p id="authMessage" class="status" role="status"></p>
+    <p class="note">ইমেইল যাচাই চালু থাকলে আগে ইমেইল যাচাই করে নিন।</p>
+  </section>
 
-      <input id="email" type="email"
-        placeholder="আপনার ইমেইল" autocomplete="email">
-
-      <input id="password" type="password"
-        placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)"
-        autocomplete="current-password">
-
-      <button id="signupBtn">নতুন অ্যাকাউন্ট তৈরি</button>
-      <button id="loginBtn" class="secondary">লগইন</button>
-
-      <p id="message" role="status"></p>
-      <small>
-        অ্যাকাউন্ট তৈরি করতে বৈধ ইমেইল ব্যবহার করুন।
-        ইমেইল যাচাই চালু থাকলে যাচাই সম্পন্ন করতে হবে।
-      </small>
+  <section id="appPanel" class="hidden">
+    <section class="panel">
+      <div class="chathead">
+        <div>
+          <h2>প্রকাশে স্বাগতম!</h2>
+          <p id="accountLabel" class="note"></p>
+        </div>
+        <button id="logoutBtn" style="width:auto">লগআউট</button>
+      </div>
+      <p id="appMessage" class="status" role="status"></p>
     </section>
 
-    <section class="panel hidden" id="homePanel">
-      <h2>প্রকাশে স্বাগতম!</h2>
-      <p>আপনি লগইন করেছেন।</p>
-      <p id="userEmail"></p>
-      <p>চ্যাটের সুবিধা পরবর্তী ধাপে যোগ করা হবে।</p>
-      <button id="logoutBtn">লগআউট</button>
-      <p id="homeMessage" role="status"></p>
+    <section class="panel">
+      <h2>আমার প্রোফাইল</h2>
+      <p class="note">অন্যরা তোমাকে এই নাম ও ইউজারনেম দিয়ে খুঁজে পাবে।</p>
+      <input id="displayName" maxlength="50" placeholder="তোমার নাম">
+      <input id="username" maxlength="30" placeholder="ইউজারনেম (যেমন asif123)">
+      <textarea id="bio" maxlength="250" placeholder="নিজের সম্পর্কে কিছু লিখো (ঐচ্ছিক)"></textarea>
+      <button id="saveProfileBtn">প্রোফাইল সংরক্ষণ</button>
+      <p id="profileMessage" class="status" role="status"></p>
     </section>
-  </main>
 
-  <script type="module">
-    import { createClient } from
-      'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    <div class="layout">
+      <section class="panel">
+        <h2>ব্যবহারকারী খোঁজো</h2>
+        <input id="searchInput" maxlength="50" placeholder="নাম বা ইউজারনেম লিখো">
+        <button id="searchBtn">খুঁজুন</button>
+        <div id="searchResults"></div>
+      </section>
 
-    const SUPABASE_URL =
-      'https://evhywnompdttjozbafvt.supabase.co';
+      <section class="panel">
+        <h2>আমার চ্যাট</h2>
+        <button id="refreshChatsBtn" class="secondary">চ্যাট তালিকা আপডেট</button>
+        <div id="chatList"></div>
+      </section>
+    </div>
 
-    const SUPABASE_KEY =
-      'sb_publishable_rnrZ4bAeS6-jT3EpRZTzrg_WerzM3-s';
+    <section class="panel hidden" id="chatPanel">
+      <div class="chathead">
+        <div>
+          <h2 id="chatTitle">ব্যক্তিগত চ্যাট</h2>
+          <p id="chatUsername" class="note"></p>
+        </div>
+        <button id="closeChatBtn" class="secondary">বন্ধ</button>
+      </div>
+      <div id="messagesBox" aria-live="polite"></div>
+      <form id="sendForm">
+        <input id="messageInput" maxlength="3000" placeholder="মেসেজ লিখো..." autocomplete="off" required>
+        <button id="sendBtn" type="submit">পাঠাও</button>
+      </form>
+      <p id="chatMessage" class="status" role="status"></p>
+      <p class="note">নতুন মেসেজ দেখতে স্বয়ংক্রিয়ভাবে কয়েক সেকেন্ড পরপর আপডেট হবে।</p>
+    </section>
+  </section>
+</main>
 
-    const supabase = createClient(
-      SUPABASE_URL, SUPABASE_KEY
-    );
+<script type="module">
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-    const authPanel = document.getElementById('authPanel');
-    const homePanel = document.getElementById('homePanel');
-    const message = document.getElementById('message');
+const SUPABASE_URL = 'https://evhywnompdttjozbafvt.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_rnrZ4bAeS6-jT3EpRZTzrg_WerzM3-s';
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function showMessage(text) {
-      message.textContent = text;
+const $ = id => document.getElementById(id);
+let currentUser = null;
+let currentConversationId = null;
+let currentPartner = null;
+let refreshTimer = null;
+let loadingMessages = false;
+let lastMessageId = null;
+
+function say(id, text) {
+  $(id).textContent = text || '';
+}
+
+function showAuth(text = '') {
+  $('authPanel').classList.remove('hidden');
+  $('appPanel').classList.add('hidden');
+  say('authMessage', text);
+}
+
+function showApp() {
+  $('authPanel').classList.add('hidden');
+  $('appPanel').classList.remove('hidden');
+  say('accountLabel', currentUser?.email || '');
+}
+
+function usernameFromEmail(email) {
+  const base = (email || 'user').split('@')[0]
+    .toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 18) || 'user';
+  return base + Math.random().toString(36).slice(2, 7);
+}
+
+async function loadProfile() {
+  if (!currentUser) return;
+  say('profileMessage', 'প্রোফাইল লোড হচ্ছে...');
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id,username,display_name,bio,avatar_url')
+    .eq('id', currentUser.id)
+    .maybeSingle();
+
+  if (error) {
+    say('profileMessage', 'প্রোফাইল লোড হয়নি: ' + error.message);
+    return;
+  }
+
+  if (data) {
+    $('displayName').value = data.display_name || '';
+    $('username').value = data.username || '';
+    $('bio').value = data.bio || '';
+    say('profileMessage', 'প্রোফাইল পাওয়া গেছে।');
+  } else {
+    $('displayName').value = (currentUser.email || '').split('@')[0];
+    $('username').value = usernameFromEmail(currentUser.email);
+    $('bio').value = '';
+    say('profileMessage', 'প্রথমবারের মতো প্রোফাইল তৈরি করো।');
+  }
+}
+
+async function saveProfile() {
+  if (!currentUser) return;
+  const display_name = $('displayName').value.trim();
+  const username = $('username').value.trim().toLowerCase();
+  const bio = $('bio').value.trim();
+
+  if (display_name.length < 1) {
+    say('profileMessage', 'তোমার নাম লিখো।');
+    return;
+  }
+  if (!/^[a-z0-9_]{3,30}$/.test(username)) {
+    say('profileMessage', 'ইউজারনেম ৩–৩০ অক্ষরের হতে হবে। ইংরেজি ছোট হাতের অক্ষর, সংখ্যা ও _ ব্যবহার করো।');
+    return;
+  }
+
+  $('saveProfileBtn').disabled = true;
+  say('profileMessage', 'সংরক্ষণ হচ্ছে...');
+
+  const { error } = await supabase.from('profiles').upsert({
+    id: currentUser.id,
+    username,
+    display_name,
+    bio,
+    avatar_url: null
+  }, { onConflict: 'id' });
+
+  $('saveProfileBtn').disabled = false;
+
+  if (error) {
+    say('profileMessage', 'সংরক্ষণ হয়নি: ' + error.message);
+    return;
+  }
+  say('profileMessage', 'প্রোফাইল সংরক্ষিত হয়েছে।');
+}
+
+async function searchUsers() {
+  if (!currentUser) return;
+  const term = $('searchInput').value.trim();
+  if (term.length < 2) {
+    say('searchResults', 'কমপক্ষে ২ অক্ষর লিখে খোঁজো।');
+    return;
+  }
+
+  $('searchBtn').disabled = true;
+  $('searchResults').textContent = 'খোঁজা হচ্ছে...';
+
+  const safe = term.replace(/[%_,().]/g, ' ').trim();
+  const [byUsername, byName] = await Promise.all([
+    supabase.from('profiles')
+      .select('id,username,display_name,bio')
+      .ilike('username', '%' + safe + '%').limit(20),
+    supabase.from('profiles')
+      .select('id,username,display_name,bio')
+      .ilike('display_name', '%' + safe + '%').limit(20)
+  ]);
+
+  $('searchBtn').disabled = false;
+
+  if (byUsername.error || byName.error) {
+    $('searchResults').textContent =
+      'খোঁজা যায়নি: ' + (byUsername.error || byName.error).message;
+    return;
+  }
+
+  const unique = new Map();
+  [...(byUsername.data || []), ...(byName.data || [])]
+    .forEach(p => { if (p.id !== currentUser.id) unique.set(p.id, p); });
+
+  $('searchResults').replaceChildren();
+
+  if (!unique.size) {
+    $('searchResults').textContent = 'কোনো ব্যবহারকারী পাওয়া যায়নি।';
+    return;
+  }
+
+  for (const p of unique.values()) {
+    const card = document.createElement('div');
+    card.className = 'userrow';
+    const title = document.createElement('strong');
+    title.textContent = p.display_name || p.username || 'ব্যবহারকারী';
+    const handle = document.createElement('p');
+    handle.textContent = '@' + (p.username || 'username');
+    const bio = document.createElement('p');
+    bio.textContent = p.bio || 'প্রোফাইলে কোনো পরিচিতি নেই।';
+    const btn = document.createElement('button');
+    btn.textContent = 'ব্যক্তিগত চ্যাট শুরু';
+    btn.onclick = () => openOrCreateChat(p);
+    card.append(title, handle, bio, btn);
+    $('searchResults').append(card);
+  }
+}
+
+async function getMyConversationIds() {
+  const { data, error } = await supabase
+    .from('conversation_members')
+    .select('conversation_id')
+    .eq('user_id', currentUser.id);
+
+  if (error) throw error;
+  return [...new Set((data || []).map(x => x.conversation_id))];
+}
+
+async function findExistingChat(otherUserId) {
+  const ids = await getMyConversationIds();
+  for (const id of ids) {
+    const { data, error } = await supabase
+      .from('conversation_members')
+      .select('user_id')
+      .eq('conversation_id', id);
+
+    if (error) throw error;
+    if ((data || []).some(m => m.user_id === otherUserId)) return id;
+  }
+  return null;
+}
+
+async function openOrCreateChat(partner) {
+  if (!currentUser) return;
+  say('appMessage', '');
+  say('chatMessage', 'চ্যাট খোলা হচ্ছে...');
+
+  try {
+    let conversationId = await findExistingChat(partner.id);
+
+    if (!conversationId) {
+      const { data, error } = await supabase.rpc(
+        'start_direct_conversation',
+        { p_other_user_id: partner.id }
+      );
+      if (error) throw error;
+      conversationId = data;
     }
 
-    function showHome(user) {
-      authPanel.classList.add('hidden');
-      homePanel.classList.remove('hidden');
-      document.getElementById('userEmail').textContent =
-        user.email || '';
+    currentPartner = partner;
+    currentConversationId = conversationId;
+    lastMessageId = null;
+
+    $('chatTitle').textContent = partner.display_name || partner.username || 'ব্যবহারকারী';
+    $('chatUsername').textContent = '@' + (partner.username || '');
+    $('chatPanel').classList.remove('hidden');
+    $('messagesBox').replaceChildren();
+    say('chatMessage', '');
+    await loadMessages();
+    await loadChats();
+    $('chatPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    say('chatMessage', 'চ্যাট খোলা যায়নি: ' + e.message);
+  }
+}
+
+async function loadChats() {
+  if (!currentUser) return;
+
+  const box = $('chatList');
+  const previousText = box.textContent;
+  if (!previousText) box.textContent = 'চ্যাট লোড হচ্ছে...';
+
+  try {
+    const ids = await getMyConversationIds();
+    box.replaceChildren();
+
+    if (!ids.length) {
+      box.textContent = 'এখনো কোনো চ্যাট নেই। কাউকে খুঁজে চ্যাট শুরু করো।';
+      return;
     }
 
-    function showAuth() {
-      homePanel.classList.add('hidden');
-      authPanel.classList.remove('hidden');
+    for (const id of ids) {
+      const { data: members, error: memberError } = await supabase
+        .from('conversation_members')
+        .select('user_id')
+        .eq('conversation_id', id);
+
+      if (memberError) throw memberError;
+
+      const other = (members || []).find(m => m.user_id !== currentUser.id);
+      if (!other) continue;
+
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id,username,display_name,bio')
+        .eq('id', other.user_id)
+        .maybeSingle();
+
+      if (profileError) throw profileError;
+      if (!profile) continue;
+
+      const row = document.createElement('div');
+      row.className = 'chatrow';
+      const title = document.createElement('strong');
+      title.textContent = profile.display_name || profile.username || 'ব্যবহারকারী';
+      const handle = document.createElement('p');
+      handle.textContent = '@' + (profile.username || '');
+      const btn = document.createElement('button');
+      btn.textContent = 'মেসেজ দেখো';
+      btn.onclick = () => openExistingChat(id, profile);
+      row.append(title, handle, btn);
+      box.append(row);
     }
 
-    document.getElementById('signupBtn').onclick = async () => {
-      const email = document.getElementById('email')
-        .value.trim();
-      const password = document.getElementById('password')
-        .value;
-
-      if (!email || password.length < 6) {
-        showMessage('সঠিক ইমেইল ও কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
-        return;
-      }
-
-      showMessage('অ্যাকাউন্ট তৈরি হচ্ছে...');
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) {
-        showMessage('সমস্যা: ' + error.message);
-        return;
-      }
-
-      if (data.session && data.user) {
-        showHome(data.user);
-      } else {
-        showMessage(
-          'অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই প্রয়োজন হলে যাচাই করে তারপর লগইন করুন।'
-        );
-      }
-    };
-
-    document.getElementById('loginBtn').onclick = async () => {
-      const email = document.getElementById('email')
-        .value.trim();
-      const password = document.getElementById('password')
-        .value;
-
-      if (!email || !password) {
-        showMessage('ইমেইল ও পাসওয়ার্ড দিন।');
-        return;
-      }
-
-      showMessage('লগইন হচ্ছে...');
-
-      const { data, error } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
-
-      if (error) {
-        showMessage('লগইন হয়নি: ' + error.message);
-        return;
-      }
-
-      showHome(data.user);
-    };
-
-    document.getElementById('logoutBtn').onclick = async () => {
-      const { error } = await supabase.auth.signOut();
-
-      if (error) {
-        document.getElementById('homeMessage').textContent =
-          'লগআউট হয়নি: ' + error.message;
-        return;
-      }
-
-      showAuth();
-      showMessage('লগআউট হয়েছে।');
-    };
-
-    const { data } = await supabase.auth.getSession();
-
-    if (data.session) {
-      showHome(data.session.user);
+    if (!box.children.length) {
+      box.textContent = 'চ্যাট পাওয়া যায়নি।';
     }
-  </script>
+  } catch (e) {
+    box.textContent = 'চ্যাট তালিকা লোড হয়নি: ' + e.message;
+  }
+}
+
+async function openExistingChat(id, profile) {
+  currentConversationId = id;
+  currentPartner = profile;
+  lastMessageId = null;
+  $('chatTitle').textContent = profile.display_name || profile.username || 'ব্যবহারকারী';
+  $('chatUsername').textContent = '@' + (profile.username || '');
+  $('chatPanel').classList.remove('hidden');
+  $('messagesBox').replaceChildren();
+  say('chatMessage', '');
+  await loadMessages();
+  $('chatPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function loadMessages() {
+  if (!currentUser || !currentConversationId || loadingMessages) return;
+  loadingMessages = true;
+
+  try {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('id,conversation_id,sender_id,body,created_at')
+      .eq('conversation_id', currentConversationId)
+      .order('created_at', { ascending: true })
+      .limit(200);
+
+    if (error) throw error;
+
+    const rows = data || [];
+    const newestId = rows.length ? rows[rows.length - 1].id : null;
+    if (newestId !== lastMessageId) {
+      const box = $('messagesBox');
+      box.replaceChildren();
+
+      for (const m of rows) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble' + (m.sender_id === currentUser.id ? ' mine' : '');
+        const body = document.createElement('div');
+        body.textContent = m.body || '';
+        const time = document.createElement('small');
+        time.textContent = new Date(m.created_at).toLocaleString('bn-BD');
+        bubble.append(body, time);
+        box.append(bubble);
+      }
+      box.scrollTop = box.scrollHeight;
+      lastMessageId = newestId;
+    }
+    say('chatMessage', '');
+  } catch (e) {
+    say('chatMessage', 'মেসেজ লোড হয়নি: ' + e.message);
+  } finally {
+    loadingMessages = false;
+  }
+}
+
+async function sendMessage(event) {
+  event.preventDefault();
+  if (!currentUser || !currentConversationId) {
+    say('chatMessage', 'আগে একটি চ্যাট খোলো।');
+    return;
+  }
+
+  const body = $('messageInput').value.trim();
+  if (!body) return;
+
+  $('sendBtn').disabled = true;
+  say('chatMessage', 'মেসেজ পাঠানো হচ্ছে...');
+
+  const { error } = await supabase.from('messages').insert({
+    conversation_id: currentConversationId,
+    sender_id: currentUser.id,
+    body
+  });
+
+  $('sendBtn').disabled = false;
+
+  if (error) {
+    say('chatMessage', 'মেসেজ পাঠানো যায়নি: ' + error.message);
+    return;
+  }
+
+  $('messageInput').value = '';
+  say('chatMessage', 'মেসেজ পাঠানো হয়েছে।');
+  await loadMessages();
+}
+
+async function startApp(user) {
+  currentUser = user;
+  showApp();
+  await loadProfile();
+  await loadChats();
+
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(async () => {
+    if (currentUser) {
+      await loadChats();
+      if (currentConversationId) await loadMessages();
+    }
+  }, 5000);
+}
+
+$('signupBtn').onclick = async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || password.length < 6) {
+    say('authMessage', 'সঠিক ইমেইল ও কমপক্ষে ৬ অক্ষরের পাসওয়ার্ড দিন।');
+    return;
+  }
+
+  $('signupBtn').disabled = true;
+  say('authMessage', 'অ্যাকাউন্ট তৈরি হচ্ছে...');
+
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  $('signupBtn').disabled = false;
+
+  if (error) {
+    say('authMessage', 'সমস্যা: ' + error.message);
+    return;
+  }
+
+  if (data.session && data.user) {
+    await startApp(data.user);
+  } else {
+    say('authMessage', 'অ্যাকাউন্ট তৈরি হয়েছে। ইমেইল যাচাই প্রয়োজন হলে যাচাই করে লগইন করো।');
+  }
+};
+
+$('loginBtn').onclick = async () => {
+  const email = $('email').value.trim();
+  const password = $('password').value;
+  if (!email || !password) {
+    say('authMessage', 'ইমেইল ও পাসওয়ার্ড দাও।');
+    return;
+  }
+
+  $('loginBtn').disabled = true;
+  say('authMessage', 'লগইন হচ্ছে...');
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  $('loginBtn').disabled = false;
+
+  if (error) {
+    say('authMessage', 'লগইন হয়নি: ' + error.message);
+    return;
+  }
+  await startApp(data.user);
+};
+
+$('saveProfileBtn').onclick = saveProfile;
+$('searchBtn').onclick = searchUsers;
+$('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    searchUsers();
+  }
+});
+$('refreshChatsBtn').onclick = loadChats;
+$('sendForm').addEventListener('submit', sendMessage);
+$('closeChatBtn').onclick = () => {
+  $('chatPanel').classList.add('hidden');
+  currentConversationId = null;
+  currentPartner = null;
+  lastMessageId = null;
+};
+$('logoutBtn').onclick = async () => {
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = null;
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    say('appMessage', 'লগআউট হয়নি: ' + error.message);
+    return;
+  }
+  currentUser = null;
+  currentConversationId = null;
+  currentPartner = null;
+  showAuth('লগআউট হয়েছে।');
+};
+
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    if (refreshTimer) clearInterval(refreshTimer);
+    refreshTimer = null;
+    currentUser = null;
+    showAuth();
+  }
+});
+
+const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+if (sessionError) {
+  showAuth('সেশন লোড হয়নি: ' + sessionError.message);
+} else if (sessionData.session) {
+  await startApp(sessionData.session.user);
+}
+</script>
 </body>
 </html>
